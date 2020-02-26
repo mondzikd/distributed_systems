@@ -11,7 +11,9 @@ Zaimplementować dwukierunkową komunikację przez UDP Java-Java
 Zaimplementować komunikację przez UDP pomiędzy językami Java i Python
 – JavaUdpServer + PythonUdpClient
 – Należy przesłać wiadomość tekstową:
+
 > żółta gęś
+
 *(uwaga na kodowanie)*
 
 
@@ -19,9 +21,9 @@ Zaimplementować komunikację przez UDP pomiędzy językami Java i Python
 
 Zaimplementować przesył wartości liczbowej w przypadku JavaUdpServer + PythonUdpClient
 – Symulujemy komunikację z platformą o innej kolejności bajtów: klient Python ma wysłać następujący ciąg bajtów:
-'''
+```
 msg_bytes = (300).to_bytes(4, byteorder='little')
-'''
+```
 – Server Javy ma wypisać otrzymaną liczbę oraz odesłać liczbę zwiększoną o jeden
 
 
