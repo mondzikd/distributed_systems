@@ -9,6 +9,7 @@ public class ServerClientThread implements Runnable{
     private PrintWriter out;
     private BufferedReader in;
     private String nick;
+    private int clientPortNumber;
 
     public  ServerClientThread(Server server, PrintWriter out, BufferedReader in) {
         this.server = server;
@@ -18,9 +19,11 @@ public class ServerClientThread implements Runnable{
 
     @Override
     public void run() {
-        // receive first message with client nickname
+        // receive first message with client nickname and portNumber
         try {
-            this.nick = in.readLine();
+            String[] verifyMessage = in.readLine().split(" ");
+            this.nick = verifyMessage[0];
+            this.clientPortNumber = Integer.parseInt(verifyMessage[1]);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -29,7 +32,7 @@ public class ServerClientThread implements Runnable{
         sendMessage("[server]: " + server.activeClientsNames());
 
         // add yourself to server's clients list
-        server.addClient(this, nick);
+        server.addClient(this, nick, clientPortNumber);
 
         // tell everyone that you joined
         server.broadcast(this, "[server]: " + nick + " joined");
@@ -45,7 +48,11 @@ public class ServerClientThread implements Runnable{
             server.broadcast(this, nick + ": " + msg);
         } while (!msg.equals("exit"));
         sendMessage("exit");
-        server.removeClient(this, nick);
+        try {
+            server.removeClient(this, nick, clientPortNumber);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendMessage(String message) {
